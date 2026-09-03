@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Search · Prime Video{% endblock %}
+{% block content %}
+<section class="search-page">
+<form method="get" class="search-form">
+<input type="search" name="q" value="{{ query }}" placeholder="Search movies and TV shows..." autofocus>
+<button type="submit" class="button primary">Search</button>
+</form>
+{% if query %}<h1>Results for "{{ query }}"</h1>{% endif %}
+<div class="movie-grid">
+{% for movie in results %}
+<a href="{{ movie.get_absolute_url }}" class="movie-card"><img src="{{ movie.poster.url }}" alt="{{ movie.title }}"><div class="movie-overlay">{{ movie.title }}</div></a>
+{% empty %}{% if query %}<p>No titles found.</p>{% endif %}{% endfor %}
+</div>
+</section>
+{% endblock %}

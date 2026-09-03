@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Watching {{ movie.title }}{% endblock %}
+{% block content %}
+<section class="player-page">
+<h1>{{ movie.title }}</h1>
+{% if movie.video %}
+<video id="video-player" class="video-player" controls preload="metadata">
+<source src="{{ movie.video.url }}" type="video/mp4">
+Your browser does not support video playback.
+</video>
+{% else %}
+<div class="video-placeholder"><h2>Video unavailable</h2><p>This title has not been uploaded yet.</p></div>
+{% endif %}
+<div class="player-info"><h2>{{ movie.title }}</h2><p>{{ movie.description }}</p></div>
+</section>
+{% endblock %}

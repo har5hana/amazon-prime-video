@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ movie.title }} · Prime Video{% endblock %}
+{% block content %}
+<section class="detail-hero" {% if movie.backdrop %}style="background-image:linear-gradient(90deg,rgba(0,0,0,.96),rgba(0,0,0,.4)),url('{{ movie.backdrop.url }}')"{% endif %}>
+<div class="detail-content">
+<span class="prime-badge">{% if movie.is_prime %}PRIME{% else %}RENT OR BUY{% endif %}</span>
+<h1>{{ movie.title }}</h1>
+<div class="metadata">{{ movie.release_year }} · {{ movie.age_rating }} · {{ movie.rating }}/5{% if movie.duration_minutes %} · {{ movie.duration_minutes }} min{% endif %}</div>
+<p>{{ movie.description }}</p>
+<div class="genres">{% for genre in movie.genres.all %}<span>{{ genre.name }}</span>{% endfor %}</div>
+<div class="hero-actions">
+<a href="{% url 'watch_movie' movie.slug %}" class="button primary">▶ Watch now</a>
+<form method="post" action="{% url 'toggle_watchlist' movie.slug %}">
+{% csrf_token %}<button class="button secondary" type="submit">{% if in_watchlist %}✓ Remove from Watchlist{% else %}+ Add to Watchlist{% endif %}</button>
+</form>
+</div>
+{% if user.is_authenticated %}
+<form method="post" action="{% url 'rate_movie' movie.slug %}" class="rating-form">
+{% csrf_token %}<label for="rating">Rate this title</label>
+<select id="rating" name="value">
+{% for value in "12345" %}<option value="{{ value }}" {% if user_rating and user_rating.value|stringformat:"s" == value %}selected{% endif %}>{{ value }}</option>{% endfor %}
+</select><button class="button secondary" type="submit">Submit rating</button>
+</form>
+{% endif %}
+</div>
+</section>
+<section class="content-section">
+<h2>You may also like</h2>
+<div class="movie-grid">
+{% for related in related_movies %}
+<a href="{{ related.get_absolute_url }}" class="movie-card"><img src="{{ related.poster.url }}" alt="{{ related.title }}"><div class="movie-overlay">{{ related.title }}</div></a>
+{% empty %}<p>No related titles yet.</p>{% endfor %}
+</div>
+</section>
+{% endblock %}

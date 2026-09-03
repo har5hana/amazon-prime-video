@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Prime Video{% endblock %}
+{% block content %}
+{% if featured %}
+<section class="hero" {% if featured.backdrop %}style="background-image:linear-gradient(90deg,rgba(0,0,0,.96),rgba(0,0,0,.25)),url('{{ featured.backdrop.url }}')"{% endif %}>
+<div class="hero-content">
+<span class="prime-badge">PRIME</span>
+<h1>{{ featured.title }}</h1>
+<div class="metadata">{{ featured.release_year }} · {{ featured.age_rating }} · {{ featured.rating }}/5</div>
+<p>{{ featured.description }}</p>
+<div class="hero-actions">
+<a href="{% url 'watch_movie' featured.slug %}" class="button primary">▶ Watch now</a>
+<a href="{{ featured.get_absolute_url }}" class="button secondary">More information</a>
+</div>
+</div>
+</section>
+{% endif %}
+
+{% if user.is_authenticated and continue_watching %}
+<section class="content-section">
+<h2>Continue watching</h2>
+<div class="movie-grid">
+{% for movie in continue_watching %}
+<a href="{% url 'watch_movie' movie.slug %}" class="movie-card">
+<img src="{{ movie.poster.url }}" alt="{{ movie.title }}"><div class="movie-overlay">{{ movie.title }}</div>
+</a>
+{% endfor %}
+</div>
+</section>
+{% endif %}
+
+{% if user.is_authenticated and watchlist %}
+<section class="content-section" id="watchlist">
+<h2>My watchlist</h2>
+<div class="movie-grid">
+{% for movie in watchlist %}
+<a href="{{ movie.get_absolute_url }}" class="movie-card">
+<img src="{{ movie.poster.url }}" alt="{{ movie.title }}"><div class="movie-overlay">{{ movie.title }}</div>
+</a>
+{% endfor %}
+</div>
+</section>
+{% endif %}
+
+<section class="content-section">
+<h2>Movies</h2>
+<div class="movie-grid">
+{% for movie in movies %}
+<a href="{{ movie.get_absolute_url }}" class="movie-card">
+<img src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+<div class="movie-overlay"><strong>{{ movie.title }}</strong><span>{{ movie.release_year }}</span></div>
+</a>
+{% empty %}<p>No movies available yet. Add content through the admin panel.</p>{% endfor %}
+</div>
+</section>
+
+<section class="content-section">
+<h2>TV Shows</h2>
+<div class="movie-grid">
+{% for movie in series %}
+<a href="{{ movie.get_absolute_url }}" class="movie-card">
+<img src="{{ movie.poster.url }}" alt="{{ movie.title }}"><div class="movie-overlay">{{ movie.title }}</div>
+</a>
+{% empty %}<p>No TV shows available yet.</p>{% endfor %}
+</div>
+</section>
+{% endblock %}
