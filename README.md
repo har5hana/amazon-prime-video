@@ -450,39 +450,6 @@ Before deploying:
 * Do not commit passwords or secret keys
 * Run `python manage.py check --deploy`
 
-## GitHub
-
-Initialize Git:
-
-```bash
-git init
-```
-
-Add files:
-
-```bash
-git add .
-```
-
-Create the first commit:
-
-```bash
-git commit -m "Initial Prime Video clone"
-```
-
-Connect the GitHub repository:
-
-```bash
-git remote add origin <YOUR_GITHUB_REPOSITORY_URL>
-```
-
-Push the project:
-
-```bash
-git branch -M main
-git push -u origin main
-```
-
 ## Future Improvements
 
 * Django REST Framework API
